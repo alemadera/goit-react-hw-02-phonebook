@@ -43,9 +43,9 @@ export const List = styled.ul`
     padding: 8px;
     font-size: 14px;
 
-    &:last-child {
-      border-bottom: none;
-    }
+    // &:last-child {
+    //   border-bottom: none;
+    // }
   }
   button {
     padding: 6px 14px;

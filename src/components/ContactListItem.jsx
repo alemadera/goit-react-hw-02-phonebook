@@ -1,13 +1,17 @@
-import React from 'react';
-import {List} from './App.styled'
+import React, { Component } from 'react';
+import { List } from './App.styled';
 
-const ContactListItem = ({ contact, handleDelete }) => {
-  return (
-    <List>
-      {contact.name} - {contact.number}
-      <button onClick={() => handleDelete(contact.id)}>Eliminar</button>
-    </List>
-  );
-};
+class ContactListItem extends Component {
+  render() {
+    const { contact, deleteContact } = this.props;
 
-export default ContactListItem
+    return (
+      <List>
+        {contact.name}: {contact.number}
+        <button onClick={() => deleteContact(contact.id)}>Delete</button>
+      </List>
+    );
+  }
+}
+
+export default ContactListItem;

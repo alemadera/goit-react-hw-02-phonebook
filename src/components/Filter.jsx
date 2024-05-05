@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Filter = ({ filter, setFilter }) => {
-  const handleChange = (event) => {
-    setFilter(event.target.value);
-  };
+class Filter extends Component {
+  render() {
+    const { filter, handleChange } = this.props;
 
-  return (
-    <input type="text" placeholder="Buscar contacto..." value={filter} onChange={handleChange} />
-  );
-};
+    return (
+      <input
+        type="text"
+        value={filter}
+        onChange={handleChange}
+        placeholder="Buscar contacto..."
+      />
+    );
+  }
+}
 
 export default Filter;

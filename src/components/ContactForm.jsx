@@ -1,40 +1,54 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { Form } from './App.styled';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix'; 
 
-const ContactForm = ({ contacts, setContacts }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+class ContactForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      number: ''
+    };
+  }
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    name === 'name' ? setName(value) : setNumber(value);
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-
+    const { name, number } = this.state;
+    const { contacts, setContacts } = this.props;
+    
     const existingContact = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
     if (existingContact) {
-      Notiflix.Notify.warning(`¡El contacto ${name} ya está en la agenda!`);
+      Notiflix.Notify.warning(`The contact ${name} already exists!`);
       return;
     }
 
-    setContacts(prevContacts => [...prevContacts, { id: nanoid(), name, number }]);
-    setName('');
-    setNumber('');
+  const newContact = { id: nanoid(), name, number };
+  const newContacts = [...contacts, newContact];
+  setContacts(newContacts);
+
+    this.setState({ name: '', number: '' });
+
+    Notiflix.Notify.success(`Contact ${name} added successfully!`);
   };
 
-  return (
-    <Form onSubmit={handleSubmit}>
-      <h2>Nombre</h2>
-      <input type="text" name="name" placeholder="Nombre" value={name} onChange={handleChange} required />
-      <h2>Telefono</h2>
-      <input type="tel" name="number" placeholder="Número de teléfono" value={number} onChange={handleChange} required />
-      <button type="submit">Agregar contacto</button>
-    </Form>
-  );
-};
+  render() {
+    const { name, number } = this.state;
+
+    return (
+      <Form onSubmit={this.handleSubmit}>
+        <h2>Nombre</h2>
+        <input type="text" name="name" value={name} onChange={this.handleChange} required />
+        <h2>Telefono</h2>
+        <input type="tel" name="number" value={number} onChange={this.handleChange} required />
+        <button type="submit">Add Contact</button>
+      </Form>
+    );
+  }
+}
 
 export default ContactForm;
